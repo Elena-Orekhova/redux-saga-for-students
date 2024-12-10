@@ -5,7 +5,13 @@ const fetchUsersFromApi = () =>
     fetch('https://jsonplaceholder.typicode.com/users?_limit=10');
 
 function* fetchUsersWorker() {
-    
+    try {
+        const response = yield call(fetchUsersFromApi);
+        const data = yield response.json();
+        yield put(setUsers(data));
+    } catch (error) {
+        console.error('Ошибка загрузки пользователей:', error);
+    }
 }
 
 export function* fetchUsersWatcher() {
